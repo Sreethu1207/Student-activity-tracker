@@ -5,19 +5,20 @@ const API = axios.create({
 });
 
 export const getActivities = () => {
-    return API.get("activity_view/");
+    return API.get("activity_view");
 };
 
 export const addActivity = (data) => {
-    return API.post("activity_view/", data);
+    return API.post("activity_view", data);
 };
 
 export const getSummary = () => {
-    return API.get("activity_summary/");
+    return API.get("activity_summary");
 };
+
 
 export const deleteActivity = (id) => {
     return API.delete(`activity_delete/${id}/`);
+    
 };
-
 export default API;

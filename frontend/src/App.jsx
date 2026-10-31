@@ -1,122 +1,104 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
 
+import { useState } from "react";
+import Sidebar from "./components/Sidebartemp";
+import ActivityForm from "./components/ActivityForm";
+import ActivityList from "./components/ActivityList";
+import Summary from "./components/Summary";
+import Toast from "./components/Toast";
+
+import "./App.css";
 function App() {
-  const [count, setCount] = useState(0)
+    const [activePage, setActivePage] = useState("Dashboard");
+    const [refresh, setRefresh] = useState(0);
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    const [toast, setToast] = useState({
+        message: "",
+        type: "success"
+    });
 
-      <div className="ticks"></div>
+    // Show popup message
+    const showToast = (message, type = "success") => {
+        setToast({ message, type });
+    };
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+    // Close popup message
+    const closeToast = () => {
+        setToast({
+            message: "",
+            type: "success"
+        });
+    };
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    // After adding an activity
+    const handleActivityAdded = () => {
+        setRefresh(prev => prev + 1);
+        showToast("Activity added successfully!", "success");
+    };
+
+    // After deleting an activity
+    const handleActivityDeleted = () => {
+        setRefresh(prev => prev + 1);
+        showToast("Activity deleted successfully!", "success");
+    };
+
+    return (
+        <>
+            <Sidebar setActivePage={setActivePage} />
+
+            <main className="app">
+                <header>
+                    <h1>Student Activity Tracker</h1>
+                    <p>Manage and track student activities</p>
+                </header>
+
+
+                {activePage === "Dashboard" && (
+                    <>
+                        <Summary refresh={refresh} />
+
+                        <ActivityForm
+                            onActivityAdded={handleActivityAdded}
+                        />
+
+                        <ActivityList
+                            refresh={refresh}
+                            onActivityDeleted={handleActivityDeleted}
+                            showToast={showToast}
+                        />
+                    </>
+                )}
+
+                {activePage === "Student Activities" && (
+                    <ActivityList
+                        refresh={refresh}
+                        onActivityDeleted={handleActivityDeleted}
+                        showToast={showToast}
+                    />
+                )}
+
+          
+                {activePage === "Add Activity" && (
+                    <ActivityForm
+                        onActivityAdded={() => {
+                            handleActivityAdded();
+                            setActivePage("Student Activities");
+                        }}
+                    />
+                )}
+
+   
+                {activePage === "Summary" && (
+                    <Summary refresh={refresh} />
+                )}
+            </main>
+
+
+            <Toast
+                message={toast.message}
+                type={toast.type}
+                onClose={closeToast}
+            />
+        </>
+    );
 }
-
-export default App
+export default App;

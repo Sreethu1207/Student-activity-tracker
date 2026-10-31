@@ -1,0 +1,98 @@
+
+.sidebar {
+    width: 280px;
+    height: 100vh;
+    background: #1e293b;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 25px 15px;
+    z-index: 1000;
+}
+
+.sidebar-title {
+    text-align: center;
+    margin-bottom: 35px;
+    color: #5391dd;
+    font-size: 22px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.sidebar-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: white;
+    text-align: left;
+    font-size: 15px;
+    cursor: pointer;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.sidebar-link:hover {
+    background: #334155;
+}
+
+.app {
+    margin-left: 250px;
+    max-width: none;
+    padding: 30px;
+}
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1100;
+    font-size: 22px;
+    padding: 8px 12px;
+    
+}
+.sidebar-overlay {
+    display: none;
+}
+@media (max-width: 768px) {
+    .sidebar {
+
+        left: -290px;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .sidebar-overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 900;
+    }
+
+    .app {
+        margin-left: 0;
+        padding: 70px 15px 20px;
+    }
+}
+.menu-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    min-width: 22px;
+}

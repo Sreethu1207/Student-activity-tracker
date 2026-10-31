@@ -6,5 +6,5 @@ from trackerapp.models import Activity
 class ActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model=Activity
-        fields=('student_name','activity','hours')
+        fields=('id','student_name','activity','hours')
     
